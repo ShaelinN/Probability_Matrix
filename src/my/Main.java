@@ -32,27 +32,24 @@ public class Main {
                 myString+=scanner.nextLine();
             }
         }catch (FileNotFoundException e){
-            System.out.println("File Not Found");
-            myString = "I am sam. sam I am. I do not like green eggs and ham.";
-
+            System.out.println("File Not Found. Ending session");
+            System.exit(-1);
         }
 
-        // set up pipeline properties
+        //from example code in prac
         Properties props = new Properties();
-        // set the list of annotators to run
         props.setProperty("annotators", "tokenize");
-        // build pipeline
         StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
-        // create a document object
         CoreDocument document = new CoreDocument(myString);
-        // annotate the document
         pipeline.annotate(document);
 
 
+        //set up lists
         NGrams = getNGrams( N, document,false);
         uniqueMarkovParents = getNGrams(N - 1, document,true);
         uniqueTokens = getNGrams( 1, document,true);
-
+        
+        //set up matrix
         matrix = createMatrix(NGrams, uniqueMarkovParents, uniqueTokens);
 
 
